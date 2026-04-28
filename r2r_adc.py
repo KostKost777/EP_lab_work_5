@@ -35,21 +35,21 @@ class R2R_ADC:
         digital_value = self.sequential_counting_adc()
         voltage = (digital_value / 255) * self.dynamic_range
         if self.verbose:
-            print(f"Digital value: {digital_value}, Voltage: {voltage:.3f} V")
+            print(f"Цифровое значение: {digital_value}, Напряжение: {voltage:.3f} В")
         return voltage
 
 if __name__ == "__main__":
-    dynamic_range = float(input("Enter the dynamic range of your DAC (V): "))
+    dynamic_range = float(input("Введите динамический диапазон вашего ЦАП (В): "))
     
     try:
         adc = R2R_ADC(dynamic_range, verbose=True)
         
         while True:
             voltage = adc.get_sc_voltage()
-            print(f"Measured voltage: {voltage:.3f} V")
+            print(f"Измеренное напряжение: {voltage:.3f} В")
             time.sleep(0.5)
             
     except KeyboardInterrupt:
-        print("\nMeasurement stopped by user")
+        print("\nИзмерение остановлено пользователем")
     finally:
-        adc.__del__()
+        del adc
