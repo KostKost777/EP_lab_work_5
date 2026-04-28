@@ -1,7 +1,7 @@
 import time
 import RPi.GPIO as GPIO
 from r2r_adc import R2R_ADC
-from adc_plot import plot_voltage_vs_time
+from adc_plot import plot_voltage_vs_time, plot_sampling_period_hist
 
 if __name__ == "__main__":
     dynamic_range = float(input("Введите динамический диапазон ЦАП (В): "))
@@ -25,6 +25,7 @@ if __name__ == "__main__":
             print(f"t = {current_time:.3f} с, U = {voltage:.3f} В")
         
         plot_voltage_vs_time(time_values, voltage_values, dynamic_range)
+        plot_sampling_period_hist(time_values)
         
     finally:
         del adc
