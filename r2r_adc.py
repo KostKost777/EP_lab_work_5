@@ -37,6 +37,23 @@ class R2R_ADC:
         if self.verbose:
             print(f"Digital value: {digital_value}, Voltage: {voltage:.3f} V")
         return voltage
+    
+    def successive_approximation_adc(self):
+        result = 0
+        for bit in range(7, -1, -1):
+            test_value = result | (1 << bit)
+            self.number_to_dac(test_value)
+            time.sleep(self.compare_time)
+            if GPIO.input(self.comp_gpio) == 0:
+                result = test_value
+        return result
+    
+    def get_sar_voltage(self):
+        digital_value = self.successive_approximation_adc()
+        voltage = (digital_value / 255) * self.dynamic_range
+        if self.verbose:
+            print(f"SAR Digital value: {digital_value}, Voltage: {voltage:.3f} V")
+        return voltage
 
 if __name__ == "__main__":
     dynamic_range = float(input("Enter the dynamic range of your DAC (V): "))
@@ -45,8 +62,8 @@ if __name__ == "__main__":
         adc = R2R_ADC(dynamic_range, verbose=True)
         
         while True:
-            voltage = adc.get_sc_voltage()
-            print(f"Measured voltage: {voltage:.3f} V")
+            voltage = adc.get_sar_voltage()
+            print(f"SAR Measured voltage: {voltage:.3f} V")
             time.sleep(0.5)
             
     except KeyboardInterrupt:
