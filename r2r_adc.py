@@ -20,7 +20,7 @@ class R2R_ADC:
     
     def number_to_dac(self, number):
         for i in range(8):
-            bit = (number >> i) & 1
+            bit = (number >> (7 - i)) & 1
             GPIO.output(self.bits_gpio[i], bit)
     
     def sequential_counting_adc(self):
@@ -35,21 +35,21 @@ class R2R_ADC:
         digital_value = self.sequential_counting_adc()
         voltage = (digital_value / 255) * self.dynamic_range
         if self.verbose:
-            print(f"Цифровое значение: {digital_value}, Напряжение: {voltage:.3f} В")
+            print(f"Digital value: {digital_value}, Voltage: {voltage:.3f} V")
         return voltage
 
 if __name__ == "__main__":
-    dynamic_range = float(input("Введите динамический диапазон вашего ЦАП (В): "))
+    dynamic_range = float(input("Enter the dynamic range of your DAC (V): "))
     
     try:
         adc = R2R_ADC(dynamic_range, verbose=True)
         
         while True:
             voltage = adc.get_sc_voltage()
-            print(f"Измеренное напряжение: {voltage:.3f} В")
+            print(f"Measured voltage: {voltage:.3f} V")
             time.sleep(0.5)
             
     except KeyboardInterrupt:
-        print("\nИзмерение остановлено пользователем")
+        print("\nMeasurement stopped by user")
     finally:
         del adc
