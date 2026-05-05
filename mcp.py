@@ -28,11 +28,14 @@ if __name__ == "__main__":
         plot_voltage_vs_time(time_values, voltage_values, dynamic_range)
         
         periods = [time_values[i] - time_values[i-1] for i in range(1, len(time_values))]
+        rounded_periods = [round(p, 2) for p in periods]
+        
         plt.figure()
-        plt.hist(periods, bins=20, edgecolor='black')
+        plt.hist(rounded_periods, bins=[0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15], edgecolor='black', align='left')
         plt.xlabel('Период измерения (с)')
         plt.ylabel('Количество измерений')
         plt.title('Гистограмма периода семплирования')
+        plt.xticks([0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15])
         plt.grid(True, alpha=0.3)
         plt.show()
         
