@@ -44,7 +44,7 @@ class R2R_ADC:
             test_value = result | (1 << bit)
             self.number_to_dac(test_value)
             time.sleep(self.compare_time)
-            if GPIO.input(self.comp_gpio) == 1:
+            if GPIO.input(self.comp_gpio) == 0:
                 result = test_value
         return result
     
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         
         while True:
             voltage = adc.get_sar_voltage()
-            print(f"Measured voltage: {voltage:.3f} V")
+            print(f"SAR Measured voltage: {voltage:.3f} V")
             time.sleep(0.5)
             
     except KeyboardInterrupt:
