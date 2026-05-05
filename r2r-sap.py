@@ -8,12 +8,12 @@ if __name__ == "__main__":
     dynamic_range = float(input("Введите динамический диапазон ЦАП (В): "))
     duration = float(input("Введите продолжительность измерений (с): "))
     
-    adc = R2R_ADC(dynamic_range, compare_time=0.0001, verbose=False)
-    
     voltage_values = []
     time_values = []
     
     try:
+        adc = R2R_ADC(dynamic_range, compare_time=0.0001, verbose=False)
+        
         start_time = time.time()
         
         while time.time() - start_time < duration:
@@ -28,5 +28,7 @@ if __name__ == "__main__":
         plot_voltage_vs_time(time_values, voltage_values, dynamic_range)
         plot_sampling_period_hist(time_values)
         
+    except KeyboardInterrupt:
+        print("\nИзмерения прерваны пользователем")
     finally:
         del adc
