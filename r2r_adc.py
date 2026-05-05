@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 class R2R_ADC:
-    def __init__(self, dynamic_range, compare_time = 0.001, verbose = False):
+    def __init__(self, dynamic_range, compare_time = 0.01, verbose = False):
         self.dynamic_range = dynamic_range
         self.verbose = verbose
         self.compare_time = compare_time
@@ -39,32 +39,13 @@ class R2R_ADC:
         return voltage
     
     def successive_approximation_adc(self):
-        """
-        Бинарный поиск для определения входного напряжения.
-        Компаратор возвращает 1, если V_in > V_dac, и 0, если V_in <= V_dac.
-        """
         result = 0
         for bit in range(7, -1, -1):
             test_value = result | (1 << bit)
             self.number_to_dac(test_value)
             time.sleep(self.compare_time)
-            
-            if GPIO.input(self.comp_gpio) == 1:
-                # V_in > V_dac → нужно увеличить значение
+            if GPIO.input(self.comp_gpio) == 0:
                 result = test_value
-            # else: V_in <= V_dac → оставляем этот бит в 0
-        
-        # После всех итераций result — это максимальное значение DAC,
-        # которое НЕ превышает V_in (или последнее значение, когда V_in > V_dac)
-        # Для более точного результата можно добавить +1, если это необходимо
-        
-        # Проверяем, нужно ли добавить 1 (если V_in > последнего значения)
-        self.number_to_dac(result)
-        time.sleep(self.compare_time)
-        if GPIO.input(self.comp_gpio) == 1:
-            # Всё ещё больше -> возвращаем result + 1 (с ограничением 255)
-            return min(result + 1, 255)
-        
         return result
     
     def get_sar_voltage(self):
@@ -78,7 +59,7 @@ if __name__ == "__main__":
     dynamic_range = float(input("Enter the dynamic range of your DAC (V): "))
     
     try:
-        adc = R2R_ADC(dynamic_range, compare_time=0.001, verbose=True)
+        adc = R2R_ADC(dynamic_range, verbose=True)
         
         while True:
             voltage = adc.get_sar_voltage()
