@@ -64,7 +64,7 @@ if __name__ == "__main__":
         while True:
             voltage = adc.get_sar_voltage()
             print(f"SAR Measured voltage: {voltage:.3f} V")
-            time.sleep(0.5)
+
             
     except KeyboardInterrupt:
         print("\nMeasurement stopped by user")
