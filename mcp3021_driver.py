@@ -43,11 +43,3 @@ if __name__ == "__main__":
     finally:
         adc.deinit()
 
-Traceback (most recent call last):
-  File "/home/b01-502/Desktop/Scripts/Reps/GET_ADC/EP_lab_work_5/mcp3021_driver.py", line 37, in <module>
-    voltage = adc.get_voltage()
-  File "/home/b01-502/Desktop/Scripts/Reps/GET_ADC/EP_lab_work_5/mcp3021_driver.py", line 24, in get_voltage
-    digital_value = self.get_number()
-  File "/home/b01-502/Desktop/Scripts/Reps/GET_ADC/EP_lab_work_5/mcp3021_driver.py", line 15, in get_number
-    data = self.bus.read_word_data(self.address, 0)
-OSError: [Errno 5] Input/output error

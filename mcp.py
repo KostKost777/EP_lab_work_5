@@ -25,8 +25,26 @@ if __name__ == "__main__":
             print(f"t = {current_time:.3f} с, U = {voltage:.3f} В")
             time.sleep(0.1)
         
+        # Вычисляем периоды измерений
+        periods = []
+        for i in range(1, len(time_values)):
+            period = time_values[i] - time_values[i-1]
+            periods.append(period)
+        
+        # Строим график
         plot_voltage_vs_time(time_values, voltage_values, dynamic_range)
-        plot_sampling_period_hist(time_values)
+        
+        # Строим гистограмму периодов
+        if periods:
+            plt.figure()
+            plt.hist(periods, bins=20, edgecolor='black')
+            plt.xlabel('Период измерения (с)')
+            plt.ylabel('Частота')
+            plt.title('Распределение периода семплирования')
+            plt.grid(True, alpha=0.3)
+            plt.show()
+        else:
+            print("Недостаточно данных для построения гистограммы")
         
     except KeyboardInterrupt:
         print("\nИзмерения прерваны пользователем")
