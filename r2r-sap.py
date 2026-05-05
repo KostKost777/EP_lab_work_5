@@ -32,3 +32,5 @@ if __name__ == "__main__":
         print("\nИзмерения прерваны пользователем")
     finally:
         del adc
+
+        #rr
