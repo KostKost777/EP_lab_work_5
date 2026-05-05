@@ -44,7 +44,7 @@ class R2R_ADC:
             test_value = result | (1 << bit)
             self.number_to_dac(test_value)
             time.sleep(self.compare_time)
-            if GPIO.input(self.comp_gpio) == 1:
+            if GPIO.input(self.comp_gpio) == 0:
                 result = test_value
         return result
     
