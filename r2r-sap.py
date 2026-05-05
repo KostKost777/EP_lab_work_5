@@ -12,7 +12,7 @@ if __name__ == "__main__":
     time_values = []
     
     try:
-        adc = R2R_ADC(dynamic_range, compare_time=0.001, verbose=False)
+        adc = R2R_ADC(dynamic_range, compare_time=0.0001, verbose=False)
         
         start_time = time.time()
         
@@ -22,6 +22,8 @@ if __name__ == "__main__":
             
             voltage_values.append(voltage)
             time_values.append(current_time)
+            
+            print(f"t = {current_time:.3f} с, U = {voltage:.3f} В")
         
         plot_voltage_vs_time(time_values, voltage_values, dynamic_range)
         plot_sampling_period_hist(time_values)
